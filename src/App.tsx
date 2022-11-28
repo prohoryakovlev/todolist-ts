@@ -12,7 +12,6 @@ export type TasksType = {
 export type FilterValuesType = 'all' | 'active' | 'completed'
 
 function App() {
-
     const todoListTitle: string = 'What to learn'
     const [tasks, setTasks] = useState<Array<TasksType>>([
         {id: v1(), title: 'HTML & CSS', isDone: true},
@@ -30,18 +29,16 @@ function App() {
         console.log(tasks)
     }
     const addTask = (title: string) => {
-        const newTask: TasksType = {
-            id: v1(),
-            title: title,
-            isDone: false
-        }
-        setTasks([newTask, ...tasks])
+        setTasks([{id: v1(), title, isDone: false}, ...tasks])
     }
 
     const changeTotolistFilter = (nextFilterValue: FilterValuesType) => {
         setFilter(nextFilterValue)
 
     }
+
+
+
     let taskForRender: Array<TasksType> = []
     if (filter === 'all') {
         taskForRender = tasks
