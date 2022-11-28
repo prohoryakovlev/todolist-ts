@@ -32,37 +32,34 @@ function App() {
         setTasks([{id: v1(), title, isDone: false}, ...tasks])
     }
 
-    const changeTotolistFilter = (nextFilterValue: FilterValuesType) => {
+    const changeTodolistFilter = (nextFilterValue: FilterValuesType) => {
         setFilter(nextFilterValue)
 
     }
 
 
-
-
     const getFilterTasks =
         (tasks: Array<TasksType>, filter: FilterValuesType): Array<TasksType> => {
-        let FilterTasks: Array<TasksType> = []
+            let FilterTasks: Array<TasksType> = []
 
-        if (filter === 'all') {
-            FilterTasks = tasks
-        } else if (filter === 'active') {
-            FilterTasks = tasks.filter(tasks => tasks.isDone === false)
-        } else if (filter === 'completed') {
-            FilterTasks = tasks.filter(tasks => tasks.isDone === true)
+            switch (filter) {
+                case "completed":
+                    return tasks.filter(tasks => tasks.isDone)
+                case "active":
+                    return tasks.filter(tasks => !tasks.isDone)
+                default:
+                    return tasks
+            }
         }
-        return FilterTasks
-    }
-
 
     return (
         <div className="App">
             <TodoList
+                tasks={getFilterTasks(tasks, filter)}
                 title={todoListTitle}
-                tasks={taskForRender}
                 addTask={addTask}
                 removeTask={removeTask}
-                changeTotolistFilter={changeTotolistFilter}/>
+                changeTotolistFilter={changeTodolistFilter}/>
         </div>
     );
 }
