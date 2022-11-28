@@ -39,14 +39,21 @@ function App() {
 
 
 
-    let taskForRender: Array<TasksType> = []
-    if (filter === 'all') {
-        taskForRender = tasks
-    } else if (filter === 'active') {
-        taskForRender = tasks.filter(tasks => tasks.isDone === false)
-    } else if (filter === 'completed') {
-        taskForRender = tasks.filter(tasks => tasks.isDone === true)
+
+    const getFilterTasks =
+        (tasks: Array<TasksType>, filter: FilterValuesType): Array<TasksType> => {
+        let FilterTasks: Array<TasksType> = []
+
+        if (filter === 'all') {
+            FilterTasks = tasks
+        } else if (filter === 'active') {
+            FilterTasks = tasks.filter(tasks => tasks.isDone === false)
+        } else if (filter === 'completed') {
+            FilterTasks = tasks.filter(tasks => tasks.isDone === true)
+        }
+        return FilterTasks
     }
+
 
     return (
         <div className="App">
