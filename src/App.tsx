@@ -12,7 +12,6 @@ export type TasksType = {
 export type FilterValuesType = 'all' | 'active' | 'completed'
 
 function App() {
-    console.log(typeof v1())
 
     const todoListTitle: string = 'What to learn'
     const [tasks, setTasks] = useState<Array<TasksType>>([
@@ -30,10 +29,10 @@ function App() {
         setTasks(updatedTasks)
         console.log(tasks)
     }
-    const addTask = () => {
+    const addTask = (title: string) => {
         const newTask: TasksType = {
             id: v1(),
-            title: "Hey-hey!!!",
+            title: title,
             isDone: false
         }
         setTasks([newTask, ...tasks])
@@ -57,6 +56,7 @@ function App() {
             <TodoList
                 title={todoListTitle}
                 tasks={taskForRender}
+                addTask={addTask}
                 removeTask={removeTask}
                 changeTotolistFilter={changeTotolistFilter}/>
         </div>
