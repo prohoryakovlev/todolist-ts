@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {FilterValuesType, TasksType} from "./App";
 
 type TodoListPropsType = {
@@ -14,11 +14,12 @@ const TodoList = (props: TodoListPropsType) => {
     const [title, setTitle] = useState<string>("")
 
     const tasksListItems = props.tasks.map((task: TasksType) => {
+        const removeTask = () => props.removeTask(task.id)
         return (
             <li key={task.id}>
                 <input type="checkbox" checked={task.isDone}/>
                 <span>{task.title}</span>
-                <button onClick={() => props.removeTask(task.id)}>x</button>
+                <button onClick={removeTask}>x</button>
             </li>
         )
     })
@@ -27,28 +28,38 @@ const TodoList = (props: TodoListPropsType) => {
         props.addTask(title)
         setTitle("")
     }
+    const setLocalTitle = (e: ChangeEvent<HTMLInputElement>) => setTitle(e.currentTarget.value)
+    const onEnterAddTask = (e: KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+            addTasks()
+        }
+    }
+
+    // const setAllFilter = () => props.changeTotolistFilter('all')
+    // const setAllActive = () => props.changeTotolistFilter('active')
+    // const setAllCompleted = () => props.changeTotolistFilter('completed')
+
+    const onOnClickHandlerCreator = (filter: FilterValuesType) => {
+        return () => props.changeTotolistFilter(filter)
+    }
+
     return (
         <div>
             <h3>{props.title}</h3>
             <div>
                 <input
                     value={title}
-                    onKeyDown={(e) => {
-                        if(e.key === "Enter"){
-                            addTasks()
-                        }
-                    }}
-                    onChange={(e) => setTitle(e.currentTarget.value)}/>
-                <button onClick={addTasks}>✖️
-                </button>
+                    onKeyDown={onEnterAddTask}
+                    onChange={setLocalTitle}/>
+                <button onClick={addTasks}>✖️</button>
             </div>
             <ul>
                 {tasksListItems}
             </ul>
             <div>
-                <button onClick={() => props.changeTotolistFilter('all')}>All</button>
-                <button onClick={() => props.changeTotolistFilter('active')}>Active</button>
-                <button onClick={() => props.changeTotolistFilter('completed')}>Completed</button>
+                <button onClick={onOnClickHandlerCreator("all")}>All</button>
+                <button onClick={onOnClickHandlerCreator("active")}>Active</button>
+                <button onClick={onOnClickHandlerCreator("completed")}>Completed</button>
 
             </div>
         </div>
